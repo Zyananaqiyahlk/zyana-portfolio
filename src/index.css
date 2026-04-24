@@ -1,0 +1,88 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html { scroll-behavior: smooth; }
+  body {
+    background-color: #F5ECD7;
+    color: #1C1C1E;
+    font-family: 'DM Sans', sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+}
+
+@layer utilities {
+  .text-gradient-coral {
+    background: linear-gradient(135deg, #FF4444, #E8920A);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .text-gradient-sage {
+    background: linear-gradient(135deg, #5C9147, #C9A84C);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .glass {
+    background: rgba(255, 255, 255, 0.72);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 107, 107, 0.25);
+    box-shadow: 0 8px 40px rgba(255,107,107,0.08);
+  }
+  .glass-dark {
+    background: rgba(28, 28, 30, 0.92);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  .iphone-frame {
+    border-radius: 44px;
+    box-shadow:
+      0 0 0 2px #3A3A3C,
+      0 0 0 4px #1C1C1E,
+      0 30px 80px rgba(0,0,0,0.4);
+  }
+  .card-lift {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  .card-lift:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 24px 60px rgba(255, 68, 68, 0.22);
+  }
+  /* Vibrant section backgrounds for light sections */
+  .section-light {
+    background: linear-gradient(160deg, #FDF6ED 0%, #F5ECD7 60%, #EDE4CC 100%);
+  }
+  .section-warm {
+    background: linear-gradient(160deg, #F8F0E3 0%, #EDE0C4 60%, #E4D5B0 100%);
+  }
+  /* Pop borders for cards on light bg */
+  .card-pop {
+    border: 1.5px solid rgba(255,107,107,0.18);
+    box-shadow: 0 4px 24px rgba(0,0,0,0.06), inset 0 1px 0 rgba(255,255,255,0.8);
+  }
+  .card-pop:hover {
+    border-color: rgba(255,107,107,0.45);
+    box-shadow: 0 12px 40px rgba(255,107,107,0.14), inset 0 1px 0 rgba(255,255,255,0.9);
+  }
+  /* Draggable device cursor */
+  .device-drag { cursor: grab; }
+  .device-drag:active { cursor: grabbing; }
+}
+
+/* SVG handwriting path animation */
+.handwrite-path {
+  stroke-dasharray: 1200;
+  stroke-dashoffset: 1200;
+  animation: drawPath 3s ease forwards;
+}
+@keyframes drawPath {
+  to { stroke-dashoffset: 0; }
+}
+
+/* Fade in on scroll — activated by IntersectionObserver */
+.reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.7s ease, transform 0.7s ease; }
+.reveal.visible { opacity: 1; transform: translateY(0); }
