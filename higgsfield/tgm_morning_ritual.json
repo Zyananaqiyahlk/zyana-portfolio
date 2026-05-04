@@ -1,0 +1,145 @@
+{
+  "project": "The Giving Movement — Morning Ritual UGC Campaign",
+  "creator": "Naqiyah Lakdawala · Zyana Systems",
+  "version": "1.0",
+  "target_duration": "60 seconds",
+  "format": "9:16 vertical",
+  "platform": ["Instagram Reels", "TikTok", "YouTube Shorts"],
+  "color_grade": "warm ivory, sage green, champagne — no cool tones",
+  "aesthetic": "quiet luxury lifestyle, cinematic film grain, intentional stillness",
+
+  "shots": [
+    {
+      "id": "S01",
+      "label": "OPENER — Windowsill",
+      "timecode": "0:00–0:06",
+      "type": "ai_generated",
+      "duration_sec": 6,
+      "higgsfield_prompt": "Slow cinematic pan across a sunlit Toronto apartment windowsill at 6am. Steam rising gently from a white ceramic mug. Warm golden hour light streams through sheer linen curtains. Soft bokeh background. Aesthetic: quiet luxury still life, film grain texture. Color grade: warm ivory and sage green tones. No people. No text. Photorealistic.",
+      "motion": "slow left-to-right drift, 0.3x speed",
+      "notes": "Set the mood. No words. Pure atmosphere. This is the exhale before the story."
+    },
+    {
+      "id": "S02",
+      "label": "FABRIC TEXTURE — B-roll",
+      "timecode": "0:06–0:12",
+      "type": "ai_generated",
+      "duration_sec": 6,
+      "higgsfield_prompt": "Extreme close-up slow motion of premium athletic fabric in sage green and champagne tones moving gently in warm natural light. Individual fiber texture clearly visible. Luxury feel, macro lens aesthetic, 60fps. Background: soft cream white. No branding visible. No text. Photorealistic fabric simulation.",
+      "motion": "ultra slow, gentle ripple, 0.2x speed",
+      "notes": "This is TGM's product without showing the product. Texture sells premium."
+    },
+    {
+      "id": "S03",
+      "label": "LIVE SHOT — Creator waking up",
+      "timecode": "0:12–0:22",
+      "type": "live_film",
+      "duration_sec": 10,
+      "shoot_notes": "Film yourself: morning stretch in TGM activewear near a window. Natural light only. No ring light. Loose, unhurried movement. Handheld iPhone, slight natural shake is fine. Face optional — can be from shoulders down. TGM product clearly visible.",
+      "angle": "medium / wide, portrait 9:16",
+      "wardrobe": "TGM activewear — full look. No competing logos visible.",
+      "notes": "The human moment. Grounds everything in reality after the cinematic open."
+    },
+    {
+      "id": "S04",
+      "label": "CITY SKYLINE — B-roll",
+      "timecode": "0:22–0:30",
+      "type": "ai_generated",
+      "duration_sec": 8,
+      "higgsfield_prompt": "Early morning Toronto cityscape from a high vantage point at golden hour. CN Tower visible in warm morning haze. Empty streets below. Cinematic wide shot, anamorphic lens flare, film grain, contemplative mood. Color grade: warm amber and ivory tones. No people visible. Photorealistic.",
+      "motion": "very slow upward tilt, 0.4x speed",
+      "notes": "Establishes Toronto. Aspirational but real. TGM is scaling North America — this anchors the geography."
+    },
+    {
+      "id": "S05",
+      "label": "LIVE SHOT — Stepping outside",
+      "timecode": "0:30–0:42",
+      "type": "live_film",
+      "duration_sec": 12,
+      "shoot_notes": "Film yourself stepping out of a building or onto a porch/balcony in TGM gear. Morning light. Slow, intentional movement. Can be a slow walk, stretching outside, or looking out at the city. No hurry. This is the brand moment — you wearing TGM in real life, real city.",
+      "angle": "wide establishing shot, then cut to medium",
+      "wardrobe": "Same TGM look as S03.",
+      "notes": "This is the brand integration moment. Product in real life, real city, real founder."
+    },
+    {
+      "id": "S06",
+      "label": "PRODUCT DETAIL — Close-up",
+      "timecode": "0:42–0:50",
+      "type": "live_film",
+      "duration_sec": 8,
+      "shoot_notes": "Close-up of the TGM tag, waistband, or logo detail. Hold still for 3 seconds, then slowly pull back to reveal the full garment. Natural light. Macro or portrait mode on iPhone. Clean background — cream wall, white linen, wood floor.",
+      "angle": "macro close-up → slow pull back",
+      "notes": "The giving tag IS the story. Make it visible. This is TGM's brand promise in one frame."
+    },
+    {
+      "id": "S07",
+      "label": "END CARD — Animated",
+      "timecode": "0:50–1:00",
+      "type": "ai_generated",
+      "duration_sec": 10,
+      "higgsfield_prompt": "Minimal elegant animated end frame. Cream warm background. A single thin sage green horizontal line draws itself from left to right across the center of the frame. Then the text space in center clears. Warm soft vignette edges. Luxury brand aesthetic. No harsh motion. Feels like breathing. 10-second seamless clip, no loop.",
+      "text_overlay": "'Made with intention.'  |  @thegivingmovement",
+      "text_style": "Cormorant Garamond or similar serif — small, centered, champagne color",
+      "notes": "Add text in CapCut or Premiere after export. Keep it minimal. This is the exhale."
+    }
+  ],
+
+  "edit_script": {
+    "tool": "CapCut or Adobe Premiere",
+    "total_duration": "60 seconds",
+    "transitions": "cuts only — no wipes, no dissolves except S06 to S07 (0.5s gentle fade)",
+    "audio": {
+      "track": "Ambient morning sound — birds, distant city hum, gentle room tone",
+      "source": "Epidemic Sound or Artlist — royalty free. Search: 'morning ambient', 'quiet luxury', 'intentional'",
+      "music_start": "0:00",
+      "music_end": "1:00",
+      "fade_out": "last 4 seconds",
+      "no_copyrighted_music": true
+    },
+    "captions": "none — let the visuals speak",
+    "color_grade_global": "Warm LUT — lift shadows to warm ivory, pull highlights to champagne, desaturate blues. LUT suggestion: VSCO A4 or Lightroom 'Soft Morning'",
+    "export_settings": {
+      "resolution": "1080x1920 (9:16)",
+      "fps": 24,
+      "format": "MP4 H.264",
+      "bitrate": "20 Mbps minimum",
+      "no_watermarks": true
+    }
+  },
+
+  "hooks": [
+    {
+      "id": "H1",
+      "text": "This is what 6am looks like when you actually care what you wear.",
+      "placement": "Text overlay on S01 at 0:02",
+      "style": "small serif, bottom third, champagne color"
+    },
+    {
+      "id": "H2",
+      "text": "I used to buy fast fashion. Then I found a brand that gives back.",
+      "placement": "Voiceover starting at 0:00, text overlay optional at 0:04",
+      "style": "small serif, centered, cream"
+    },
+    {
+      "id": "H3",
+      "text": "POV: Building a company in activewear that has a better mission than most startups.",
+      "placement": "Text overlay on S03 at 0:14",
+      "style": "small sans-serif, top third, white"
+    }
+  ],
+
+  "deliverables": [
+    "1 × 60-sec master video (9:16, no watermark, full usage rights)",
+    "3 × Hook variants (same edit, different opening text — A/B test ready)",
+    "1 × AI B-roll pack (S01, S02, S04, S07 exported individually)",
+    "1 × 15-sec cut-down for Stories"
+  ],
+
+  "higgsfield_cli_commands": {
+    "note": "Run these commands from your terminal after higgsfield CLI is authenticated",
+    "S01": "higgsfield generate --prompt \"Slow cinematic pan across a sunlit Toronto apartment windowsill at 6am. Steam rising from white ceramic mug. Warm golden light, linen curtains, soft bokeh. Quiet luxury still life, film grain, warm ivory sage tones. No people.\" --duration 6 --ratio 9:16 --style cinematic --output ./shots/S01_opener.mp4",
+    "S02": "higgsfield generate --prompt \"Extreme close-up slow motion premium athletic fabric sage green champagne tones moving in warm natural light. Macro lens, 60fps, luxury feel. Soft cream background. No branding.\" --duration 6 --ratio 9:16 --style cinematic --output ./shots/S02_fabric.mp4",
+    "S04": "higgsfield generate --prompt \"Early morning Toronto cityscape golden hour. CN Tower in warm morning haze. Empty streets. Cinematic wide, anamorphic lens flare, film grain. Warm amber ivory tones. No people.\" --duration 8 --ratio 9:16 --style cinematic --output ./shots/S04_city.mp4",
+    "S07": "higgsfield generate --prompt \"Minimal elegant end frame animation. Warm cream background. Single thin sage green line draws left to right. Center text space clears. Soft warm vignette edges. Luxury brand aesthetic. Breathing motion. 10 seconds.\" --duration 10 --ratio 9:16 --style cinematic --output ./shots/S07_endcard.mp4"
+  }
+}
