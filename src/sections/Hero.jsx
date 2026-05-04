@@ -129,7 +129,7 @@ export default function Hero() {
             className="inline-flex items-center gap-2 bg-coral/15 border border-coral/35 rounded-full px-4 py-1.5 mb-6"
           >
             <span className="w-2 h-2 rounded-full bg-coral animate-pulse" />
-            <span className="text-coral text-xs font-dm font-semibold tracking-wide">Day 10 of 90 — Building Live</span>
+            <span className="text-coral text-xs font-dm font-semibold tracking-wide">Toronto-based · UGC + AI Content Studio</span>
           </motion.div>
 
           <motion.h1
@@ -153,8 +153,8 @@ export default function Hero() {
             transition={{ duration: 0.6, delay: 0.25 }}
             className="font-dm text-white/60 text-lg leading-relaxed mb-8"
           >
-            I'm Naqiyah — AI automation specialist & UGC creator documenting every build, every day.
-            Authentic tech & lifestyle content for brands that want real people.
+            I'm Naqiyah — UGC creator & AI content studio founder based in Toronto.
+            Authentic short-form video for brands with a mission. Filmed on real devices, delivered in 48 hours.
           </motion.p>
 
           <motion.div
@@ -164,16 +164,16 @@ export default function Hero() {
             className="flex flex-wrap gap-3 mb-10"
           >
             <a
-              href="#products"
+              href="#portfolio"
               className="bg-coral hover:bg-coral-dark text-white font-syne font-bold text-sm px-7 py-3.5 rounded-full transition-all hover:shadow-[0_0_30px_rgba(255,68,68,0.45)]"
             >
-              Get the Bundle →
+              See My Work →
             </a>
             <a
-              href="#portfolio"
+              href="mailto:naqiyahlk@gmail.com"
               className="border border-white/20 hover:border-coral/50 text-white/80 hover:text-white font-dm text-sm px-7 py-3.5 rounded-full transition-colors"
             >
-              See My Work
+              Work With Me
             </a>
           </motion.div>
 
@@ -185,9 +185,9 @@ export default function Hero() {
             className="flex items-center gap-8"
           >
             {[
-              { value: '10', label: 'Days Live' },
-              { value: '3',  label: 'Agents Built' },
-              { value: '5+', label: 'Brand Niches' },
+              { value: '5+',  label: 'Brand Niches' },
+              { value: '48h', label: 'Delivery Time' },
+              { value: '2x',  label: 'Free Revisions' },
             ].map(({ value, label }) => (
               <div key={label}>
                 <p className="font-syne font-extrabold text-white text-3xl leading-none">{value}</p>
