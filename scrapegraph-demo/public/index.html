@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Zyana × ScrapeGraph Demo</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#F5F0E8;color:#1A1A18;min-height:100vh;padding:2rem}
+  h1{font-size:1.5rem;font-weight:600;margin-bottom:.25rem;color:#1A1A18}
+  p.sub{font-size:.875rem;color:#8A8880;margin-bottom:2rem}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1.25rem}
+  .card{background:#fff;border:0.5px solid #E8E3DA;border-radius:12px;padding:1.5rem}
+  .card h2{font-size:1rem;font-weight:600;margin-bottom:.5rem}
+  .card p{font-size:.8125rem;color:#8A8880;margin-bottom:1rem;line-height:1.6}
+  .pill{display:inline-block;font-size:.6875rem;font-weight:600;padding:2px 10px;border-radius:20px;margin-bottom:.75rem}
+  .pill.teal{background:#E1F5EE;color:#0F6E56}
+  .pill.amber{background:#FAEEDA;color:#854F0B}
+  .pill.coral{background:#FAECE7;color:#993C1D}
+  input,textarea{width:100%;padding:.625rem .875rem;border:0.5px solid #E8E3DA;border-radius:8px;font-size:.875rem;background:#FDFAF5;color:#1A1A18;margin-bottom:.75rem;font-family:inherit}
+  input:focus,textarea:focus{outline:2px solid #7A8C6E;outline-offset:1px}
+  button{width:100%;padding:.625rem 1rem;background:#1A1A18;color:#F5F0E8;border:none;border-radius:8px;font-size:.875rem;font-weight:500;cursor:pointer;transition:opacity .15s}
+  button:hover{opacity:.85}
+  button:disabled{opacity:.4;cursor:not-allowed}
+  .result{margin-top:1rem;background:#F5F0E8;border-radius:8px;padding:1rem;font-size:.8125rem;line-height:1.7;max-height:320px;overflow-y:auto;white-space:pre-wrap;word-break:break-word;color:#2C2A26;display:none}
+  .result.show{display:block}
+  .error{color:#993C1D;background:#FAECE7;border-radius:8px;padding:.75rem 1rem;font-size:.8125rem;margin-top:.75rem;display:none}
+  .error.show{display:block}
+  .spinner{display:none;text-align:center;padding:.5rem 0;font-size:.8125rem;color:#8A8880}
+  .spinner.show{display:block}
+  .status-bar{background:#1A1A18;color:#C5CEBC;font-size:.75rem;padding:.5rem 1rem;border-radius:8px;margin-bottom:1.5rem;display:flex;align-items:center;gap:.5rem}
+  .dot{width:6px;height:6px;border-radius:50%;background:#7A8C6E}
+</style>
+</head>
+<body>
+
+<div class="status-bar">
+  <div class="dot"></div>
+  <span>Zyana Systems × ScrapeGraph — Local Demo</span>
+  <span style="margin-left:auto;opacity:.5">localhost:3333</span>
+</div>
+
+<h1>ScrapeGraph Pipeline Demo</h1>
+<p class="sub">Live web intelligence for brand research, lead generation, and competitor tracking.</p>
+
+<div class="grid">
+
+  <!-- LANE 1: Brand Research -->
+  <div class="card">
+    <div class="pill teal">Lane 1 — Brand Research</div>
+    <h2>Brand Research → Concept Brief</h2>
+    <p>Paste any brand URL. ScrapeGraph extracts brand values, mission, products, and giving model — ready to feed into Velora.</p>
+    <input type="url" id="brand-url" placeholder="https://thegivingmovement.com" value="https://thegivingmovement.com">
+    <button onclick="runBrand()">Run Brand Research</button>
+    <div class="spinner" id="brand-spin">Scraping... this takes 10–20 seconds</div>
+    <div class="result" id="brand-result"></div>
+    <div class="error" id="brand-error"></div>
+  </div>
+
+  <!-- LANE 2: Lead Gen -->
+  <div class="card">
+    <div class="pill amber">Lane 2 — Lead Generation</div>
+    <h2>Search → Contact List</h2>
+    <p>Describe your ideal client. ScrapeGraph searches the web and returns structured contact info ready for your n8n outreach.</p>
+    <textarea id="lead-query" rows="3" placeholder="Toronto restaurants with online booking system contact email">Toronto restaurants with online booking system contact email</textarea>
+    <button onclick="runLeads()">Find Leads</button>
+    <div class="spinner" id="lead-spin">Searching... 10–20 seconds</div>
+    <div class="result" id="lead-result"></div>
+    <div class="error" id="lead-error"></div>
+  </div>
+
+  <!-- LANE 3: Competitor -->
+  <div class="card">
+    <div class="pill coral">Lane 3 — Competitor Intel</div>
+    <h2>Competitor Blog → Content Gaps</h2>
+    <p>Paste a competitor URL. ScrapeGraph crawls their blog and surfaces what they're publishing so you can fill the gaps.</p>
+    <input type="url" id="comp-url" placeholder="https://vuori.com" value="https://vuori.com">
+    <button onclick="runCompetitor()">Analyse Competitor</button>
+    <div class="spinner" id="comp-spin">Crawling... 15–25 seconds</div>
+    <div class="result" id="comp-result"></div>
+    <div class="error" id="comp-error"></div>
+  </div>
+
+</div>
+
+<script>
+async function post(endpoint, body) {
+  const r = await fetch(endpoint, { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(body) })
+  return r.json()
+}
+
+function show(id, text) {
+  const el = document.getElementById(id)
+  el.textContent = typeof text === 'string' ? text : JSON.stringify(text, null, 2)
+  el.classList.add('show')
+}
+
+function toggle(ids, cls, add) {
+  ids.forEach(id => document.getElementById(id).classList[add?'add':'remove'](cls))
+}
+
+async function runBrand() {
+  const url = document.getElementById('brand-url').value.trim()
+  if (!url) return
+  toggle(['brand-result','brand-error'],'show',false)
+  toggle(['brand-spin'],'show',true)
+  const data = await post('/api/brand-research', { url })
+  toggle(['brand-spin'],'show',false)
+  if (data.error) { show('brand-error', 'Error: ' + data.error); document.getElementById('brand-error').classList.add('show') }
+  else {
+    const out = [
+      '── BRAND DATA ──────────────────────────',
+      JSON.stringify(data.brand, null, 2),
+      '',
+      '── HOMEPAGE PREVIEW (first 500 chars) ──',
+      data.markdown?.slice(0,500) + '...'
+    ].join('\n')
+    show('brand-result', out)
+  }
+}
+
+async function runLeads() {
+  const query = document.getElementById('lead-query').value.trim()
+  if (!query) return
+  toggle(['lead-result','lead-error'],'show',false)
+  toggle(['lead-spin'],'show',true)
+  const data = await post('/api/lead-gen', { query })
+  toggle(['lead-spin'],'show',false)
+  if (data.error) { show('lead-error', 'Error: ' + data.error); document.getElementById('lead-error').classList.add('show') }
+  else {
+    const leads = data.leads || []
+    const out = leads.map((l,i) => [
+      `${i+1}. ${l?.business_name || l?.name || 'Unknown'}`,
+      `   Website: ${l?.website || l?.url || '-'}`,
+      `   Phone:   ${l?.phone || '-'}`,
+      `   Email:   ${l?.email || '-'}`,
+    ].join('\n')).join('\n\n')
+    show('lead-result', out || JSON.stringify(leads, null, 2))
+  }
+}
+
+async function runCompetitor() {
+  const url = document.getElementById('comp-url').value.trim()
+  if (!url) return
+  toggle(['comp-result','comp-error'],'show',false)
+  toggle(['comp-spin'],'show',true)
+  const data = await post('/api/competitor', { url })
+  toggle(['comp-spin'],'show',false)
+  if (data.error) { show('comp-error', 'Error: ' + data.error); document.getElementById('comp-error').classList.add('show') }
+  else {
+    const posts = data.posts || []
+    const out = posts.map((p,i) => [
+      `${i+1}. ${p?.title || 'Untitled'}`,
+      p?.date    ? `   Date:    ${p.date}` : '',
+      p?.topic   ? `   Topic:   ${p.topic}` : '',
+      p?.summary ? `   Summary: ${p.summary}` : '',
+    ].filter(Boolean).join('\n')).join('\n\n')
+    show('comp-result', out || JSON.stringify(posts, null, 2))
+  }
+}
+</script>
+</body>
+</html>
