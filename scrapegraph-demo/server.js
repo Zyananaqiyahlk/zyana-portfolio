@@ -1,11 +1,11 @@
 import 'dotenv/config'
 import express from 'express'
-import { scrape, extract, search } from 'scrapegraph-js'
+import { smartScraper, markdownify, searchScraper } from 'scrapegraph-js'
 import path from 'path'
 import { fileURLToPath } from 'url'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
-const app = express()
+const app  = express()
 const PORT = 3333
 
 app.use(express.json())
@@ -14,45 +14,43 @@ app.use(express.static(path.join(__dirname, 'public')))
 const API_KEY = process.env.SGAI_API_KEY
 
 if (!API_KEY || API_KEY === 'your-api-key-here') {
-  console.error('\n  ERROR: SGAI_API_KEY not set in .env')
-  console.error('  Get your key at https://dashboard.scrapegraphai.com\n')
+  console.warn('\n  WARNING: SGAI_API_KEY not set — add it to .env')
+  console.warn('  Get your key at https://dashboard.scrapegraphai.com\n')
 }
 
-// ── Brand research ────────────────────────────────────────────────────────────
+// ── Brand research ───────────────────────────────────────────────────────────
 app.post('/api/brand-research', async (req, res) => {
   const { url } = req.body
   if (!url) return res.status(400).json({ error: 'url required' })
   try {
-    const [mdResult, extractResult] = await Promise.all([
-      scrape(API_KEY, { url, format: 'markdown' }),
-      extract(API_KEY, {
-        url,
-        prompt: 'Extract: brand name, mission statement, core values (list), target customer, sustainability or giving model claims, product categories (list), price range, creator/ambassador program details.',
-      })
+    const [md, brand] = await Promise.all([
+      markdownify(API_KEY, url),
+      smartScraper(
+        API_KEY,
+        'Extract as JSON: brand_name, mission_statement, core_values (array), target_customer, giving_model_claims, product_categories (array), price_range, ambassador_program.',
+        url
+      )
     ])
-    if (mdResult.error) throw new Error(mdResult.error.message || JSON.stringify(mdResult.error))
-    if (extractResult.error) throw new Error(extractResult.error.message || JSON.stringify(extractResult.error))
     res.json({
       success: true,
-      markdown: String(mdResult.data?.result || mdResult.data || '').slice(0, 2000),
-      brand: extractResult.data?.result || extractResult.data || {}
+      markdown: String(md || '').slice(0, 2000),
+      brand: brand || {}
     })
   } catch (e) {
     res.status(500).json({ error: e.message })
   }
 })
 
-// ── Lead gen ──────────────────────────────────────────────────────────────────
+// ── Lead gen ─────────────────────────────────────────────────────────────────
 app.post('/api/lead-gen', async (req, res) => {
   const { query } = req.body
   if (!query) return res.status(400).json({ error: 'query required' })
   try {
-    const result = await search(API_KEY, {
-      query: `Find businesses and extract: name, website, phone, email, address, booking system. ${query}`,
-      limit: 10,
-    })
-    if (result.error) throw new Error(result.error.message || JSON.stringify(result.error))
-    const raw = result.data?.result || result.data || []
+    const raw = await searchScraper(
+      API_KEY,
+      `Find businesses and extract: business_name, website, phone, email, address, booking_system. ${query}`,
+      10
+    )
     res.json({ success: true, leads: Array.isArray(raw) ? raw : [raw] })
   } catch (e) {
     res.status(500).json({ error: e.message })
@@ -65,12 +63,11 @@ app.post('/api/competitor', async (req, res) => {
   if (!url) return res.status(400).json({ error: 'url required' })
   try {
     const blogUrl = url.replace(/\/$/, '') + '/blogs/news'
-    const result = await extract(API_KEY, {
-      url: blogUrl,
-      prompt: 'Extract all blog posts: title, date, URL, topic, 1-sentence summary. Return as JSON array.',
-    })
-    if (result.error) throw new Error(result.error.message || JSON.stringify(result.error))
-    const raw = result.data?.result || result.data || []
+    const raw = await smartScraper(
+      API_KEY,
+      'Extract all blog posts as a JSON array. For each: title, publish_date, url, topic, summary.',
+      blogUrl
+    )
     res.json({ success: true, posts: Array.isArray(raw) ? raw : [raw] })
   } catch (e) {
     res.status(500).json({ error: e.message })
@@ -78,6 +75,6 @@ app.post('/api/competitor', async (req, res) => {
 })
 
 app.listen(PORT, () => {
-  console.log(`\n  Zyana × ScrapeGraph demo → http://localhost:${PORT}`)
+  console.log(`\n  Zyana × ScrapeGraph → http://localhost:${PORT}`)
   console.log(`  API key: ${API_KEY && API_KEY !== 'your-api-key-here' ? 'set ✓' : 'MISSING — add to .env'}\n`)
 })
